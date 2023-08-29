@@ -14,24 +14,19 @@ const (
 	GetSegmentBySlugQuery = `SELECT slug, description FROM segments WHERE slug=$1;`
 )
 
-type SegmentRepository interface {
-	CreateSegment(segment model.CreateSegmentDTO) (string, error)
-	DeleteSegment(slug string) error
-}
-
-type SegmentRepositoryImpl struct {
+type SegmentRepository struct {
 	ctx context.Context
 	db  *sql.DB
 }
 
-func NewSegmentRepository(ctx context.Context, db *sql.DB) SegmentRepository {
-	return &SegmentRepositoryImpl{
+func NewSegmentRepository(ctx context.Context, db *sql.DB) *SegmentRepository {
+	return &SegmentRepository{
 		ctx: ctx,
 		db:  db,
 	}
 }
 
-func (s SegmentRepositoryImpl) checkIfSegmentAlreadyExists(slug string) bool {
+func (s SegmentRepository) checkIfSegmentAlreadyExists(slug string) bool {
 	var segment model.Segment
 
 	err := s.db.QueryRowContext(s.ctx, GetSegmentBySlugQuery, slug).Scan(&segment.Slug, &segment.Description)
@@ -39,7 +34,7 @@ func (s SegmentRepositoryImpl) checkIfSegmentAlreadyExists(slug string) bool {
 	return !errors.Is(err, sql.ErrNoRows)
 }
 
-func (s SegmentRepositoryImpl) CreateSegment(segment model.CreateSegmentDTO) (string, error) {
+func (s SegmentRepository) CreateSegment(segment model.CreateSegmentDTO) (string, error) {
 	if exists := s.checkIfSegmentAlreadyExists(segment.Slug); !exists {
 		var slug string
 
@@ -59,7 +54,7 @@ func (s SegmentRepositoryImpl) CreateSegment(segment model.CreateSegmentDTO) (st
 	return "", fmt.Errorf("error while creating segment: segment with this slug already exists")
 }
 
-func (s SegmentRepositoryImpl) DeleteSegment(slug string) error {
+func (s SegmentRepository) DeleteSegment(slug string) error {
 	if _, err := s.db.ExecContext(s.ctx, DeleteSegmentQuery, slug); err != nil {
 		return err
 	}
