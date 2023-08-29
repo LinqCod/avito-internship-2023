@@ -21,28 +21,19 @@ const (
 	CheckIfUserHasSegment = `SELECT user_id, slug FROM users_segments WHERE user_id=$1 AND slug=$2;`
 )
 
-type UserRepository interface {
-	CreateUser(user model.CreateUserDTO) (int64, error)
-	GetUserById(id int64) (*model.User, error)
-	GetAllUsers() ([]*model.User, error)
-	AddUserToSegment(userId int64, slug string) error
-	DeleteUserFromSegment(userId int64, slug string) error
-	GetUserActiveSegments(userId int64) (*model.ActiveUserSegmentsDTO, error)
-}
-
-type UserRepositoryImpl struct {
+type UserRepository struct {
 	ctx context.Context
 	db  *sql.DB
 }
 
-func NewUserRepository(ctx context.Context, db *sql.DB) UserRepository {
-	return &UserRepositoryImpl{
+func NewUserRepository(ctx context.Context, db *sql.DB) *UserRepository {
+	return &UserRepository{
 		ctx: ctx,
 		db:  db,
 	}
 }
 
-func (u UserRepositoryImpl) CreateUser(user model.CreateUserDTO) (int64, error) {
+func (u UserRepository) CreateUser(user model.CreateUserDTO) (int64, error) {
 	var id int64
 
 	err := u.db.QueryRowContext(
@@ -57,7 +48,7 @@ func (u UserRepositoryImpl) CreateUser(user model.CreateUserDTO) (int64, error) 
 	return id, nil
 }
 
-func (u UserRepositoryImpl) GetUserById(id int64) (*model.User, error) {
+func (u UserRepository) GetUserById(id int64) (*model.User, error) {
 	var user model.User
 
 	if err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, id).Scan(
@@ -70,7 +61,7 @@ func (u UserRepositoryImpl) GetUserById(id int64) (*model.User, error) {
 	return &user, nil
 }
 
-func (u UserRepositoryImpl) GetAllUsers() ([]*model.User, error) {
+func (u UserRepository) GetAllUsers() ([]*model.User, error) {
 	var users []*model.User
 
 	rows, err := u.db.QueryContext(u.ctx, GetAllUsersQuery)
@@ -93,7 +84,7 @@ func (u UserRepositoryImpl) GetAllUsers() ([]*model.User, error) {
 	return users, nil
 }
 
-func (u UserRepositoryImpl) checkIfUserHasSegment(userId int64, slug string) bool {
+func (u UserRepository) checkIfUserHasSegment(userId int64, slug string) bool {
 	var userSegment model.UserSegment
 
 	err := u.db.QueryRowContext(u.ctx, CheckIfUserHasSegment, userId, slug).Scan(&userSegment.UserId, &userSegment.Slug)
@@ -101,7 +92,7 @@ func (u UserRepositoryImpl) checkIfUserHasSegment(userId int64, slug string) boo
 	return !errors.Is(err, sql.ErrNoRows)
 }
 
-func (u UserRepositoryImpl) AddUserToSegment(userId int64, slug string) error {
+func (u UserRepository) AddUserToSegment(userId int64, slug string) error {
 	var user model.User
 
 	err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, userId).Scan(&user.Id, &user.Username)
@@ -126,7 +117,7 @@ func (u UserRepositoryImpl) AddUserToSegment(userId int64, slug string) error {
 	return nil
 }
 
-func (u UserRepositoryImpl) DeleteUserFromSegment(userId int64, slug string) error {
+func (u UserRepository) DeleteUserFromSegment(userId int64, slug string) error {
 	var user model.User
 
 	err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, userId).Scan(&user.Id, &user.Username)
@@ -151,7 +142,7 @@ func (u UserRepositoryImpl) DeleteUserFromSegment(userId int64, slug string) err
 	return nil
 }
 
-func (u UserRepositoryImpl) GetUserActiveSegments(userId int64) (*model.ActiveUserSegmentsDTO, error) {
+func (u UserRepository) GetUserActiveSegments(userId int64) (*model.ActiveUserSegmentsDTO, error) {
 	var user model.User
 
 	err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, userId).Scan(&user.Id, &user.Username)
