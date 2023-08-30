@@ -47,12 +47,8 @@ func main() {
 		logger.Fatalf("error while trying to ping db: %v", err)
 	}
 
-	logger.Info("Success ping!")
-
 	// init routing
-	router := api.InitRouter(context.Background(), db)
-
-	// TODO: init swagger
+	router := api.InitRouter(context.Background(), logger, db)
 
 	// init server
 	serverAddr := fmt.Sprintf(":%s", viper.GetString("SERVER_PORT"))

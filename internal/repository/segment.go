@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/linqcod/avito-internship-2023/internal/domain/model"
+	"github.com/linqcod/avito-internship-2023/internal/model"
 )
 
 const (
@@ -55,6 +55,7 @@ func (s SegmentRepository) CreateSegment(segment model.CreateSegmentDTO) (string
 }
 
 func (s SegmentRepository) DeleteSegment(slug string) error {
+
 	if _, err := s.db.ExecContext(s.ctx, DeleteSegmentQuery, slug); err != nil {
 		return err
 	}

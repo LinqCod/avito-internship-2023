@@ -1,6 +1,8 @@
-package repository
+package service
 
-import "github.com/linqcod/avito-internship-2023/internal/domain/model"
+import (
+	"github.com/linqcod/avito-internship-2023/internal/model"
+)
 
 type SegmentRepository interface {
 	CreateSegment(segment model.CreateSegmentDTO) (string, error)

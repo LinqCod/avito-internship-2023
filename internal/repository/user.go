@@ -5,7 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
-	"github.com/linqcod/avito-internship-2023/internal/domain/model"
+	"github.com/linqcod/avito-internship-2023/internal/model"
 )
 
 //TODO: add database errors
@@ -17,7 +17,7 @@ const (
 
 	AddUserToSegment      = `INSERT INTO users_segments (user_id, slug) VALUES ($1, $2);`
 	DeleteUserFromSegment = `DELETE FROM users_segments WHERE user_id=$1 AND slug=$2;`
-	GetUserActiveSegments = `SELECT user_id, slug FROM users_segments WHERE user_id=$1;`
+	GetUserSegments       = `SELECT user_id, slug FROM users_segments WHERE user_id=$1;`
 	CheckIfUserHasSegment = `SELECT user_id, slug FROM users_segments WHERE user_id=$1 AND slug=$2;`
 )
 
@@ -74,11 +74,11 @@ func (u UserRepository) GetAllUsers() ([]*model.User, error) {
 	defer rows.Close()
 
 	for rows.Next() {
-		var user *model.User
+		var user model.User
 		if err := rows.Scan(&user.Id, &user.Username); err != nil {
 			return nil, err
 		}
-		users = append(users, user)
+		users = append(users, &user)
 	}
 
 	return users, nil
@@ -142,7 +142,7 @@ func (u UserRepository) DeleteUserFromSegment(userId int64, slug string) error {
 	return nil
 }
 
-func (u UserRepository) GetUserActiveSegments(userId int64) (*model.ActiveUserSegmentsDTO, error) {
+func (u UserRepository) GetUserSegments(userId int64) ([]*model.UserSegment, error) {
 	var user model.User
 
 	err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, userId).Scan(&user.Id, &user.Username)
@@ -152,7 +152,7 @@ func (u UserRepository) GetUserActiveSegments(userId int64) (*model.ActiveUserSe
 
 	var segments []*model.UserSegment
 
-	rows, err := u.db.QueryContext(u.ctx, GetUserActiveSegments, userId)
+	rows, err := u.db.QueryContext(u.ctx, GetUserSegments, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -162,13 +162,12 @@ func (u UserRepository) GetUserActiveSegments(userId int64) (*model.ActiveUserSe
 	defer rows.Close()
 
 	for rows.Next() {
-		var segment *model.UserSegment
+		var segment model.UserSegment
 		if err := rows.Scan(&segment.UserId, &segment.Slug); err != nil {
 			return nil, err
 		}
-		segments = append(segments, segment)
+		segments = append(segments, &segment)
 	}
 
-	return model.ConvertUserSegmentToActiveUserSegments(userId, segments), nil
-
+	return segments, nil
 }

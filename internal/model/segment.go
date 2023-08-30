@@ -18,7 +18,6 @@ type CreateSegmentDTO struct {
 type ChangeUserSegmentsDTO struct {
 	SegmentsToAdd    []string `json:"segments_to_add"`
 	SegmentsToRemove []string `json:"segments_to_remove"`
-	UserId           int64    `json:"user_id"`
 }
 
 type ActiveSegment struct {
