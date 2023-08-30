@@ -1,16 +1,15 @@
 CREATE TABLE IF NOT EXISTS users (
-                                     id serial PRIMARY KEY,
-                                     username varchar
+                                     id SERIAL PRIMARY KEY,
+                                     username VARCHAR
 );
 
 CREATE TABLE IF NOT EXISTS segments (
-                                        slug varchar PRIMARY KEY,
-                                        description text
+                                        slug VARCHAR PRIMARY KEY,
+                                        description TEXT
 );
 
 CREATE TABLE IF NOT EXISTS users_segments (
-                                              user_id serial,
-                                              slug varchar,
-                                              CONSTRAINT fk_user FOREIGN KEY (user_id) REFERENCES users (id),
-                                              CONSTRAINT fk_segment FOREIGN KEY (slug) REFERENCES segments (slug)
+                                              user_id INTEGER REFERENCES users(id),
+                                              slug VARCHAR REFERENCES segments(slug),
+                                              CONSTRAINT users_segments_pk PRIMARY KEY (user_id, slug)
 );
