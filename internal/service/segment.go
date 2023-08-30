@@ -1,11 +1,11 @@
 package service
 
 import (
-	"github.com/linqcod/avito-internship-2023/internal/model"
+	"github.com/linqcod/avito-internship-2023/internal/handler/dto"
 )
 
 type SegmentRepository interface {
-	CreateSegment(segment model.CreateSegmentDTO) (string, error)
+	CreateSegment(segment dto.CreateSegmentDTO) (string, error)
 	DeleteSegment(slug string) error
 }
 
@@ -19,7 +19,7 @@ func NewSegmentService(repo SegmentRepository) *SegmentService {
 	}
 }
 
-func (s SegmentService) CreateSegment(segment model.CreateSegmentDTO) (string, error) {
+func (s SegmentService) CreateSegment(segment dto.CreateSegmentDTO) (string, error) {
 	return s.repo.CreateSegment(segment)
 }
 

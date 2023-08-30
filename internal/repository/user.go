@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/linqcod/avito-internship-2023/internal/handler/dto"
 	"github.com/linqcod/avito-internship-2023/internal/model"
 )
 
@@ -15,10 +16,11 @@ const (
 	GetUserByIdQuery = `SELECT id, username FROM users WHERE id=$1;`
 	GetAllUsersQuery = `SELECT id, username FROM users;`
 
-	AddUserToSegment      = `INSERT INTO users_segments (user_id, slug) VALUES ($1, $2);`
+	AddUserToSegment      = `INSERT INTO users_segments (user_id, slug, ttl) VALUES ($1, $2, $3);`
 	DeleteUserFromSegment = `DELETE FROM users_segments WHERE user_id=$1 AND slug=$2;`
-	GetUserSegments       = `SELECT user_id, slug FROM users_segments WHERE user_id=$1;`
-	CheckIfUserHasSegment = `SELECT user_id, slug FROM users_segments WHERE user_id=$1 AND slug=$2;`
+	GetUserActiveSegments = `SELECT user_id, slug, ttl FROM users_segments 
+                          		WHERE user_id=$1 AND (ttl IS NULL OR ttl > CURRENT_TIMESTAMP);`
+	CheckIfUserHasSegment = `SELECT user_id, slug, ttl FROM users_segments WHERE user_id=$1 AND slug=$2;`
 )
 
 type UserRepository struct {
@@ -33,7 +35,7 @@ func NewUserRepository(ctx context.Context, db *sql.DB) *UserRepository {
 	}
 }
 
-func (u UserRepository) CreateUser(user model.CreateUserDTO) (int64, error) {
+func (u UserRepository) CreateUser(user dto.CreateUserDTO) (int64, error) {
 	var id int64
 
 	err := u.db.QueryRowContext(
@@ -87,12 +89,12 @@ func (u UserRepository) GetAllUsers() ([]*model.User, error) {
 func (u UserRepository) checkIfUserHasSegment(userId int64, slug string) bool {
 	var userSegment model.UserSegment
 
-	err := u.db.QueryRowContext(u.ctx, CheckIfUserHasSegment, userId, slug).Scan(&userSegment.UserId, &userSegment.Slug)
+	err := u.db.QueryRowContext(u.ctx, CheckIfUserHasSegment, userId, slug).Scan(&userSegment.UserId, &userSegment.Slug, &userSegment.TTL)
 
 	return !errors.Is(err, sql.ErrNoRows)
 }
 
-func (u UserRepository) AddUserToSegment(userId int64, slug string) error {
+func (u UserRepository) AddUserToSegment(userId int64, slug string, ttl string) error {
 	var user model.User
 
 	err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, userId).Scan(&user.Id, &user.Username)
@@ -109,6 +111,7 @@ func (u UserRepository) AddUserToSegment(userId int64, slug string) error {
 		AddUserToSegment,
 		userId,
 		slug,
+		ttl,
 	)
 	if err != nil {
 		return err
@@ -142,7 +145,7 @@ func (u UserRepository) DeleteUserFromSegment(userId int64, slug string) error {
 	return nil
 }
 
-func (u UserRepository) GetUserSegments(userId int64) ([]*model.UserSegment, error) {
+func (u UserRepository) GetUserActiveSegments(userId int64) ([]*model.UserSegment, error) {
 	var user model.User
 
 	err := u.db.QueryRowContext(u.ctx, GetUserByIdQuery, userId).Scan(&user.Id, &user.Username)
@@ -152,7 +155,7 @@ func (u UserRepository) GetUserSegments(userId int64) ([]*model.UserSegment, err
 
 	var segments []*model.UserSegment
 
-	rows, err := u.db.QueryContext(u.ctx, GetUserSegments, userId)
+	rows, err := u.db.QueryContext(u.ctx, GetUserActiveSegments, userId)
 	if err != nil {
 		return nil, err
 	}
@@ -163,7 +166,7 @@ func (u UserRepository) GetUserSegments(userId int64) ([]*model.UserSegment, err
 
 	for rows.Next() {
 		var segment model.UserSegment
-		if err := rows.Scan(&segment.UserId, &segment.Slug); err != nil {
+		if err := rows.Scan(&segment.UserId, &segment.Slug, &segment.TTL); err != nil {
 			return nil, err
 		}
 		segments = append(segments, &segment)

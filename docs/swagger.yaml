@@ -1,55 +1,57 @@
 basePath: /api/v1
 definitions:
-  github_com_linqcod_avito-internship-2023_internal_model.ActiveSegment:
-    properties:
-      slug:
-        type: string
-    type: object
-  github_com_linqcod_avito-internship-2023_internal_model.ActiveUserSegmentsDTO:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.ActiveUserSegmentsDTO:
     properties:
       segments:
         items:
-          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ActiveSegment'
+          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.SegmentWithTTL'
         type: array
       user_id:
         type: integer
     type: object
-  github_com_linqcod_avito-internship-2023_internal_model.ChangeUserSegmentsDTO:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.ChangeUserSegmentsDTO:
     properties:
       segments_to_add:
         items:
-          type: string
+          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.SegmentWithTTL'
         type: array
       segments_to_remove:
         items:
           type: string
         type: array
     type: object
-  github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentDTO:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentDTO:
     properties:
       description:
         type: string
       slug:
         type: string
     type: object
-  github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentResponse:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentResponse:
     properties:
       slug:
         type: string
     type: object
-  github_com_linqcod_avito-internship-2023_internal_model.CreateUserDTO:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserDTO:
     properties:
       username:
         type: string
     type: object
-  github_com_linqcod_avito-internship-2023_internal_model.CreateUserResponse:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserResponse:
     properties:
       id:
         type: integer
     type: object
-  github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO:
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO:
     properties:
       error:
+        type: string
+    type: object
+  github_com_linqcod_avito-internship-2023_internal_handler_dto.SegmentWithTTL:
+    properties:
+      slug:
+        type: string
+      ttl:
         type: string
     type: object
   github_com_linqcod_avito-internship-2023_internal_model.User:
@@ -79,22 +81,22 @@ paths:
         name: segment
         required: true
         schema:
-          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentDTO'
+          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentDTO'
       produces:
       - application/json
       responses:
         "201":
           description: segment created successfully
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentResponse'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentResponse'
         "400":
           description: error bad request data
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
         "500":
           description: error while inserting segment to db table
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: create segment
       tags:
       - segments
@@ -113,7 +115,7 @@ paths:
         "500":
           description: error while deleting segment
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: delete segment
       tags:
       - segments
@@ -132,7 +134,7 @@ paths:
         "500":
           description: error while getting users
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: get users
       tags:
       - users
@@ -146,22 +148,22 @@ paths:
         name: user
         required: true
         schema:
-          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateUserDTO'
+          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserDTO'
       produces:
       - application/json
       responses:
         "201":
           description: user created successfully
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateUserResponse'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserResponse'
         "400":
           description: error bad request data
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
         "500":
           description: error while inserting user to db table
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: create user
       tags:
       - users
@@ -184,11 +186,11 @@ paths:
         "400":
           description: error bad request data
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
         "500":
           description: error while getting user
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: get user
       tags:
       - users
@@ -207,15 +209,15 @@ paths:
         "200":
           description: segments received successfully
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ActiveUserSegmentsDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ActiveUserSegmentsDTO'
         "400":
           description: error bad request data
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
         "500":
           description: error while getting users
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: get active segments
       tags:
       - users
@@ -230,7 +232,7 @@ paths:
         name: segmentsChanges
         required: true
         schema:
-          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ChangeUserSegmentsDTO'
+          $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ChangeUserSegmentsDTO'
       - description: User id
         in: path
         name: id
@@ -244,11 +246,11 @@ paths:
         "400":
           description: error bad request data
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
         "500":
           description: error while changing segments
           schema:
-            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO'
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
       summary: change user segments
       tags:
       - users

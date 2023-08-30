@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"errors"
 	"fmt"
+	"github.com/linqcod/avito-internship-2023/internal/handler/dto"
 	"github.com/linqcod/avito-internship-2023/internal/model"
 )
 
@@ -34,7 +35,7 @@ func (s SegmentRepository) checkIfSegmentAlreadyExists(slug string) bool {
 	return !errors.Is(err, sql.ErrNoRows)
 }
 
-func (s SegmentRepository) CreateSegment(segment model.CreateSegmentDTO) (string, error) {
+func (s SegmentRepository) CreateSegment(segment dto.CreateSegmentDTO) (string, error) {
 	if exists := s.checkIfSegmentAlreadyExists(segment.Slug); !exists {
 		var slug string
 
