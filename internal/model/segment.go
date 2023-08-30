@@ -15,6 +15,10 @@ type CreateSegmentDTO struct {
 	Description string `json:"description,omitempty"`
 }
 
+type CreateSegmentResponse struct {
+	Slug string `json:"slug"`
+}
+
 type ChangeUserSegmentsDTO struct {
 	SegmentsToAdd    []string `json:"segments_to_add"`
 	SegmentsToRemove []string `json:"segments_to_remove"`
