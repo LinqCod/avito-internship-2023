@@ -5,6 +5,7 @@ import (
 	"errors"
 	"fmt"
 	"github.com/linqcod/avito-internship-2023/cmd/api"
+	_ "github.com/linqcod/avito-internship-2023/docs"
 	"github.com/linqcod/avito-internship-2023/pkg/config"
 	"github.com/linqcod/avito-internship-2023/pkg/database"
 	"github.com/spf13/viper"
@@ -22,6 +23,15 @@ func init() {
 	config.LoadConfig(".env")
 }
 
+// @title User Segmentation API
+// @version         1.0
+// @description     User segmentation service
+
+// @contact.name   Balin Maxim
+// @contact.email  linqcod@yandex.ru
+
+// @host      localhost:8080
+// @BasePath  /api/v1
 func main() {
 	// init zap logger
 	loggerConfig := zap.NewProductionConfig()
