@@ -4,13 +4,13 @@ import (
 	"encoding/json"
 	"github.com/gin-gonic/gin"
 	"github.com/linqcod/avito-internship-2023/internal/common/errorTypes"
-	"github.com/linqcod/avito-internship-2023/internal/model"
+	"github.com/linqcod/avito-internship-2023/internal/handler/dto"
 	"go.uber.org/zap"
 	"net/http"
 )
 
 type SegmentService interface {
-	CreateSegment(segment model.CreateSegmentDTO) (string, error)
+	CreateSegment(segment dto.CreateSegmentDTO) (string, error)
 	DeleteSegment(slug string) error
 }
 
@@ -33,17 +33,17 @@ func NewSegmentHandler(logger *zap.SugaredLogger, service SegmentService) *Segme
 //	@Tags			segments
 //	@Accept			json
 //	@Produce		json
-//	@Param			segment	body		model.CreateSegmentDTO	true	"Create segment"
-//	@Success		201		{object}	model.CreateSegmentResponse	"segment created successfully"
-//	@Failure		400		{object}	model.ErrorDTO	"error bad request data"
-//	@Failure		500		{object}	model.ErrorDTO	"error while inserting segment to db table"
+//	@Param			segment	body		dto.CreateSegmentDTO	true	"Create segment"
+//	@Success		201		{object}	dto.CreateSegmentResponse	"segment created successfully"
+//	@Failure		400		{object}	dto.ErrorDTO	"error bad request data"
+//	@Failure		500		{object}	dto.ErrorDTO	"error while inserting segment to db table"
 //	@Router			/segments [post]
 func (h SegmentHandler) CreateSegment(c *gin.Context) {
-	var segment model.CreateSegmentDTO
+	var segment dto.CreateSegmentDTO
 
 	if err := json.NewDecoder(c.Request.Body).Decode(&segment); err != nil {
 		h.logger.Errorf("error while unmarshaling segment body: %v", err)
-		c.JSON(http.StatusBadRequest, model.ErrorDTO{
+		c.JSON(http.StatusBadRequest, dto.ErrorDTO{
 			Error: errorTypes.ErrJSONUnmarshalling.Error(),
 		})
 		return
@@ -52,13 +52,13 @@ func (h SegmentHandler) CreateSegment(c *gin.Context) {
 	slug, err := h.service.CreateSegment(segment)
 	if err != nil {
 		h.logger.Errorf("error while creating segment: %v", err)
-		c.JSON(http.StatusInternalServerError, model.ErrorDTO{
+		c.JSON(http.StatusInternalServerError, dto.ErrorDTO{
 			Error: errorTypes.ErrDBDataInsertion.Error(),
 		})
 		return
 	}
 
-	c.JSON(http.StatusCreated, model.CreateSegmentResponse{
+	c.JSON(http.StatusCreated, dto.CreateSegmentResponse{
 		Slug: slug,
 	})
 }
@@ -70,14 +70,14 @@ func (h SegmentHandler) CreateSegment(c *gin.Context) {
 //	@Tags			segments
 //	@Param			slug	path		string					true	"Segment slug"
 //	@Success		204	"segment deleted successfully"
-//	@Failure		500		{object}	model.ErrorDTO	"error while deleting segment"
+//	@Failure		500		{object}	dto.ErrorDTO	"error while deleting segment"
 //	@Router			/segments/{id} [delete]
 func (h SegmentHandler) DeleteSegment(c *gin.Context) {
 	slug := c.Param("slug")
 
 	if err := h.service.DeleteSegment(slug); err != nil {
 		h.logger.Errorf("error while deleting segment: %v", err)
-		c.JSON(http.StatusInternalServerError, model.ErrorDTO{
+		c.JSON(http.StatusInternalServerError, dto.ErrorDTO{
 			Error: errorTypes.ErrDBDataDeletion.Error(),
 		})
 		return

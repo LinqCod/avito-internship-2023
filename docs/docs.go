@@ -39,7 +39,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentDTO"
                         }
                     }
                 ],
@@ -47,19 +47,19 @@ const docTemplate = `{
                     "201": {
                         "description": "segment created successfully",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentResponse"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentResponse"
                         }
                     },
                     "400": {
                         "description": "error bad request data",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     },
                     "500": {
                         "description": "error while inserting segment to db table",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -88,7 +88,7 @@ const docTemplate = `{
                     "500": {
                         "description": "error while deleting segment",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -117,7 +117,7 @@ const docTemplate = `{
                     "500": {
                         "description": "error while getting users",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -141,7 +141,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateUserDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserDTO"
                         }
                     }
                 ],
@@ -149,19 +149,19 @@ const docTemplate = `{
                     "201": {
                         "description": "user created successfully",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.CreateUserResponse"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserResponse"
                         }
                     },
                     "400": {
                         "description": "error bad request data",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     },
                     "500": {
                         "description": "error while inserting user to db table",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -196,13 +196,13 @@ const docTemplate = `{
                     "400": {
                         "description": "error bad request data",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     },
                     "500": {
                         "description": "error while getting user",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -231,19 +231,19 @@ const docTemplate = `{
                     "200": {
                         "description": "segments received successfully",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ActiveUserSegmentsDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ActiveUserSegmentsDTO"
                         }
                     },
                     "400": {
                         "description": "error bad request data",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     },
                     "500": {
                         "description": "error while getting users",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -269,7 +269,7 @@ const docTemplate = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ChangeUserSegmentsDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ChangeUserSegmentsDTO"
                         }
                     },
                     {
@@ -287,13 +287,13 @@ const docTemplate = `{
                     "400": {
                         "description": "error bad request data",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     },
                     "500": {
                         "description": "error while changing segments",
                         "schema": {
-                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO"
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
                         }
                     }
                 }
@@ -301,21 +301,13 @@ const docTemplate = `{
         }
     },
     "definitions": {
-        "github_com_linqcod_avito-internship-2023_internal_model.ActiveSegment": {
-            "type": "object",
-            "properties": {
-                "slug": {
-                    "type": "string"
-                }
-            }
-        },
-        "github_com_linqcod_avito-internship-2023_internal_model.ActiveUserSegmentsDTO": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.ActiveUserSegmentsDTO": {
             "type": "object",
             "properties": {
                 "segments": {
                     "type": "array",
                     "items": {
-                        "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_model.ActiveSegment"
+                        "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.SegmentWithTTL"
                     }
                 },
                 "user_id": {
@@ -323,13 +315,13 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_linqcod_avito-internship-2023_internal_model.ChangeUserSegmentsDTO": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.ChangeUserSegmentsDTO": {
             "type": "object",
             "properties": {
                 "segments_to_add": {
                     "type": "array",
                     "items": {
-                        "type": "string"
+                        "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.SegmentWithTTL"
                     }
                 },
                 "segments_to_remove": {
@@ -340,7 +332,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentDTO": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentDTO": {
             "type": "object",
             "properties": {
                 "description": {
@@ -351,7 +343,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_linqcod_avito-internship-2023_internal_model.CreateSegmentResponse": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateSegmentResponse": {
             "type": "object",
             "properties": {
                 "slug": {
@@ -359,7 +351,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_linqcod_avito-internship-2023_internal_model.CreateUserDTO": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserDTO": {
             "type": "object",
             "properties": {
                 "username": {
@@ -367,7 +359,7 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_linqcod_avito-internship-2023_internal_model.CreateUserResponse": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.CreateUserResponse": {
             "type": "object",
             "properties": {
                 "id": {
@@ -375,10 +367,21 @@ const docTemplate = `{
                 }
             }
         },
-        "github_com_linqcod_avito-internship-2023_internal_model.ErrorDTO": {
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO": {
             "type": "object",
             "properties": {
                 "error": {
+                    "type": "string"
+                }
+            }
+        },
+        "github_com_linqcod_avito-internship-2023_internal_handler_dto.SegmentWithTTL": {
+            "type": "object",
+            "properties": {
+                "slug": {
+                    "type": "string"
+                },
+                "ttl": {
                     "type": "string"
                 }
             }
