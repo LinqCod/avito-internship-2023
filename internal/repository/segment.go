@@ -10,6 +10,13 @@ import (
 )
 
 const (
+	GetUserIdsByPercentageQuery = `
+									SELECT id FROM users
+									ORDER BY random()
+									LIMIT (SELECT count(DISTINCT id) FROM users) * $1 / 100;
+	`
+	AddSegmentToUserQuery = `INSERT INTO users_segments (user_id, slug) VALUES ($1, $2);`
+
 	CreateSegmentQuery    = `INSERT INTO segments (slug, description) VALUES ($1, $2) RETURNING slug;`
 	DeleteSegmentQuery    = `DELETE FROM segments WHERE slug=$1;`
 	GetSegmentBySlugQuery = `SELECT slug, description FROM segments WHERE slug=$1;`
@@ -47,6 +54,33 @@ func (s SegmentRepository) CreateSegment(segment dto.CreateSegmentDTO) (string, 
 		).Scan(&slug)
 		if err != nil {
 			return "", err
+		}
+
+		if segment.Percentage != 0 {
+			var userIds []int64
+
+			rows, err := s.db.QueryContext(s.ctx, GetUserIdsByPercentageQuery, segment.Percentage)
+			if err != nil {
+				return slug, err
+			}
+			if rows.Err() != nil {
+				return slug, err
+			}
+			defer rows.Close()
+
+			for rows.Next() {
+				var userId int64
+				if err := rows.Scan(&userId); err != nil {
+					return slug, err
+				}
+				userIds = append(userIds, userId)
+			}
+
+			for _, id := range userIds {
+				if _, err := s.db.ExecContext(s.ctx, AddSegmentToUserQuery, id, slug); err != nil {
+					return slug, err
+				}
+			}
 		}
 
 		return slug, nil
