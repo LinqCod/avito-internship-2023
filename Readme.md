@@ -58,22 +58,22 @@ make service-down
 Для тестирования апи был выбран Postman.
 
 Добавление пользователя:
-![Screenshot from 2023-08-31 18-25-56](https://github.com/LinqCod/avito-internship-2023/assets/58244765/09582a59-d138-46c2-a5c3-1c467d1a6c06)
+![Screenshot from 2023-08-31 18-25-56](https://github.com/LinqCod/avito-internship-2023/assets/58244765/c6681330-638b-4148-9e20-712c05fd835a)
 
 Получение всех пользователей:
-![Screenshot from 2023-08-31 18-26-14](https://github.com/LinqCod/avito-internship-2023/assets/58244765/a4beea4e-f03b-406e-a0a3-81e4c142b951)
+![Screenshot from 2023-08-31 18-26-14](https://github.com/LinqCod/avito-internship-2023/assets/58244765/ffd0ff5b-e523-4a4d-91cf-b46e7165807c)
 
 Добавление сегмента (поля описания и процента пользователей, к которым необходимо автоматически добавить сегмент опциональны):
-![Screenshot from 2023-08-31 18-27-02](https://github.com/LinqCod/avito-internship-2023/assets/58244765/a97a6d75-0f0d-4350-8d23-08f3e08f38fa)
+![Screenshot from 2023-08-31 18-27-02](https://github.com/LinqCod/avito-internship-2023/assets/58244765/cce19f08-ef9a-46a4-b919-79a78c3af448)
 
 Получение активных сегментов пользователя:
-![Screenshot from 2023-08-31 18-27-15](https://github.com/LinqCod/avito-internship-2023/assets/58244765/a2707284-edf8-4454-a97b-1e8735b2a77d)
+![Screenshot from 2023-08-31 18-27-15](https://github.com/LinqCod/avito-internship-2023/assets/58244765/2a4bcbcc-3548-458f-a086-9b558e1e43b2)
 
 Изменение сегментов пользователя:
-![Screenshot from 2023-08-31 18-29-03](https://github.com/LinqCod/avito-internship-2023/assets/58244765/4493c36e-4852-4832-8624-55a1889179c3)
+![Screenshot from 2023-08-31 18-29-03](https://github.com/LinqCod/avito-internship-2023/assets/58244765/d0ad65ba-d19d-4292-871d-257a056a0e40)
 
 Результат изменения:
-![Screenshot from 2023-08-31 18-30-41](https://github.com/LinqCod/avito-internship-2023/assets/58244765/5c35f0dc-fc3c-497f-98ed-7df0677d4dc2)
+![Screenshot from 2023-08-31 18-30-41](https://github.com/LinqCod/avito-internship-2023/assets/58244765/c20201ca-c8e9-4812-b422-136a75c03f46)
 
 ## Детали реализации
 * Старался по максимуму использовать лучшие практики при разработке
