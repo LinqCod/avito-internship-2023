@@ -23,14 +23,16 @@ const (
 )
 
 type SegmentRepository struct {
-	ctx context.Context
-	db  *sql.DB
+	ctx         context.Context
+	db          *sql.DB
+	historyRepo HistoryRepository
 }
 
-func NewSegmentRepository(ctx context.Context, db *sql.DB) *SegmentRepository {
+func NewSegmentRepository(ctx context.Context, db *sql.DB, historyRepo HistoryRepository) *SegmentRepository {
 	return &SegmentRepository{
-		ctx: ctx,
-		db:  db,
+		ctx:         ctx,
+		db:          db,
+		historyRepo: historyRepo,
 	}
 }
 
@@ -78,6 +80,10 @@ func (s SegmentRepository) CreateSegment(segment dto.CreateSegmentDTO) (string, 
 
 			for _, id := range userIds {
 				if _, err := s.db.ExecContext(s.ctx, AddSegmentToUserQuery, id, slug); err != nil {
+					return slug, err
+				}
+
+				if err = s.historyRepo.SaveUserSegmentHistoryRecord(id, slug, model.AddType); err != nil {
 					return slug, err
 				}
 			}

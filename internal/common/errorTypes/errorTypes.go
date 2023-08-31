@@ -9,4 +9,5 @@ var (
 	ErrDBDataReception    = errors.New("error while receipting db data")
 	ErrDBDataModification = errors.New("error while changing db data")
 	ErrBadRequestData     = errors.New("error bad request data")
+	ErrFailedToCreateFile = errors.New("error while trying to create file on server")
 )
