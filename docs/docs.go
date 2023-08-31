@@ -338,6 +338,9 @@ const docTemplate = `{
                 "description": {
                     "type": "string"
                 },
+                "percentage": {
+                    "type": "integer"
+                },
                 "slug": {
                     "type": "string"
                 }

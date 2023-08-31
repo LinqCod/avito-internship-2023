@@ -5,6 +5,7 @@ import "github.com/linqcod/avito-internship-2023/internal/model"
 type CreateSegmentDTO struct {
 	Slug        string `json:"slug"`
 	Description string `json:"description,omitempty"`
+	Percentage  int    `json:"percentage,omitempty"`
 }
 
 type CreateSegmentResponse struct {
