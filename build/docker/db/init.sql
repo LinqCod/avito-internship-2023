@@ -11,6 +11,14 @@ CREATE TABLE IF NOT EXISTS segments (
 CREATE TABLE IF NOT EXISTS users_segments (
                                               user_id INTEGER REFERENCES users(id),
                                               slug VARCHAR REFERENCES segments(slug),
-                                              ttl TIMESTAMP WITH TIME ZONE,
+                                              ttl timestamptz,
                                               CONSTRAINT users_segments_pk PRIMARY KEY (user_id, slug)
+);
+
+CREATE TABLE IF NOT EXISTS users_segments_history (
+                                              user_id INTEGER REFERENCES users(id),
+                                              slug VARCHAR REFERENCES segments(slug),
+                                              action_type VARCHAR,
+                                              action_time timestamptz,
+                                              CONSTRAINT users_segments_history_pk PRIMARY KEY (user_id, slug)
 );

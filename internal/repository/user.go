@@ -24,14 +24,16 @@ const (
 )
 
 type UserRepository struct {
-	ctx context.Context
-	db  *sql.DB
+	ctx         context.Context
+	db          *sql.DB
+	historyRepo HistoryRepository
 }
 
-func NewUserRepository(ctx context.Context, db *sql.DB) *UserRepository {
+func NewUserRepository(ctx context.Context, db *sql.DB, historyRepo HistoryRepository) *UserRepository {
 	return &UserRepository{
-		ctx: ctx,
-		db:  db,
+		ctx:         ctx,
+		db:          db,
+		historyRepo: historyRepo,
 	}
 }
 
@@ -117,6 +119,10 @@ func (u UserRepository) AddUserToSegment(userId int64, slug string, ttl string) 
 		return err
 	}
 
+	if err = u.historyRepo.SaveUserSegmentHistoryRecord(userId, slug, model.AddType); err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -139,6 +145,10 @@ func (u UserRepository) DeleteUserFromSegment(userId int64, slug string) error {
 		slug,
 	)
 	if err != nil {
+		return err
+	}
+
+	if err = u.historyRepo.SaveUserSegmentHistoryRecord(userId, slug, model.RemoveType); err != nil {
 		return err
 	}
 

@@ -196,6 +196,39 @@ paths:
       summary: get user
       tags:
       - users
+  /users/{id}/{month}/{year}:
+    get:
+      description: get user segment history by month and date
+      parameters:
+      - description: User id
+        in: path
+        name: id
+        required: true
+        type: integer
+      - description: month to get history from
+        in: path
+        name: month
+        required: true
+        type: integer
+      - description: year to get history from
+        in: path
+        name: year
+        required: true
+        type: integer
+      responses:
+        "200":
+          description: history csv file received successfully
+        "400":
+          description: error bad request data
+          schema:
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
+        "500":
+          description: error while getting history
+          schema:
+            $ref: '#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO'
+      summary: get user segment history
+      tags:
+      - users
   /users/{id}/active:
     get:
       description: get user active segments

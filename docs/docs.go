@@ -298,6 +298,55 @@ const docTemplate = `{
                     }
                 }
             }
+        },
+        "/users/{id}/{month}/{year}": {
+            "get": {
+                "description": "get user segment history by month and date",
+                "tags": [
+                    "users"
+                ],
+                "summary": "get user segment history",
+                "parameters": [
+                    {
+                        "type": "integer",
+                        "description": "User id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "month to get history from",
+                        "name": "month",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "type": "integer",
+                        "description": "year to get history from",
+                        "name": "year",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "history csv file received successfully"
+                    },
+                    "400": {
+                        "description": "error bad request data",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
+                        }
+                    },
+                    "500": {
+                        "description": "error while getting history",
+                        "schema": {
+                            "$ref": "#/definitions/github_com_linqcod_avito-internship-2023_internal_handler_dto.ErrorDTO"
+                        }
+                    }
+                }
+            }
         }
     },
     "definitions": {

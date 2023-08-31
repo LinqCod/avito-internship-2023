@@ -18,12 +18,15 @@ func InitRouter(ctx context.Context, logger *zap.SugaredLogger, db *sql.DB) *gin
 	router.GET("/docs/*any", ginSwagger.WrapHandler(swaggerFiles.Handler))
 
 	// init services, repos, handlers
-	userRepo := repository.NewUserRepository(ctx, db)
-	segmentRepo := repository.NewSegmentRepository(ctx, db)
+	historyRepo := repository.NewHistoryRepository(ctx, db)
+	userRepo := repository.NewUserRepository(ctx, db, historyRepo)
+	segmentRepo := repository.NewSegmentRepository(ctx, db, historyRepo)
 
+	historyService := service.NewHistoryService(historyRepo)
 	userService := service.NewUserService(userRepo)
 	segmentService := service.NewSegmentService(segmentRepo)
 
+	historyHandler := handler.NewHistoryHandler(logger, historyService)
 	userHandler := handler.NewUserHandler(logger, userService)
 	segmentHandler := handler.NewSegmentHandler(logger, segmentService)
 
@@ -36,6 +39,7 @@ func InitRouter(ctx context.Context, logger *zap.SugaredLogger, db *sql.DB) *gin
 			users.GET("", userHandler.GetAllUsers)
 			users.POST("/:id/changeSegments", userHandler.ChangeUserSegments)
 			users.GET("/:id/active", userHandler.GetUserActiveSegments)
+			users.GET("/:id/:month/:year", historyHandler.GetUserSegmentHistory)
 		}
 		segments := api.Group("/segments")
 		{
